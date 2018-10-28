@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #cfcfcf;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="checkers.view.buttonController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8e0000" height="27.0" layoutX="-4.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="808.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c62828" height="93.0" layoutX="-4.0" layoutY="27.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="808.0" />
+      <Label layoutX="25.0" layoutY="39.0" prefHeight="63.0" prefWidth="317.0" text="Network Checkers" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="36.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff5f52" height="169.0" layoutX="-7.0" layoutY="437.0" stroke="TRANSPARENT" strokeType="INSIDE" width="815.0" />
+      <VBox id="hostJoinBox" fx:id="hostJoinBox" alignment="CENTER" layoutX="233.0" layoutY="210.0" prefHeight="352.0" prefWidth="334.0" style="-fx-background-color: #FFFFFF;">
+         <children>
+            <Button id="hostGame" fx:id="hostGame" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Host Game">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="40.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="joinGame" fx:id="joinGame" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Join Game">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="40.0" top="40.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <VBox id="joinBox" fx:id="joinBox" alignment="CENTER" layoutX="233.0" layoutY="210.0" prefHeight="352.0" prefWidth="334.0" style="-fx-background-color: #FFFFFF;" visible="false">
+         <children>
+            <Label text="IP Address">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </Label>
+            <TextField id="ipAddress" fx:id="ipAddress" alignment="CENTER" maxWidth="200.0" prefHeight="31.0" prefWidth="200.0" />
+            <Button id="connectToServer" fx:id="connectToServer" contentDisplay="CENTER" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Join Game">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="back" fx:id="back" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #9e9e9e;" text="Back">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
