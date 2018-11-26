@@ -21,7 +21,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff5f52" height="169.0" layoutX="-7.0" layoutY="437.0" stroke="TRANSPARENT" strokeType="INSIDE" width="815.0" />
       <VBox id="hostJoinBox" fx:id="hostJoinBox" alignment="CENTER" layoutX="233.0" layoutY="210.0" prefHeight="352.0" prefWidth="334.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <Button id="hostGame" fx:id="hostGame" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Host Game">
+            <Button id="hostGame" fx:id="hostGame" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" onAction="#hostGame" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Host Game">
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
@@ -50,7 +50,7 @@
                </padding>
             </Label>
             <TextField id="ipAddress" fx:id="ipAddress" alignment="CENTER" maxWidth="200.0" prefHeight="31.0" prefWidth="200.0" />
-            <Button id="connectToServer" fx:id="connectToServer" contentDisplay="CENTER" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Join Game">
+            <Button id="connectToServer" fx:id="connectToServer" contentDisplay="CENTER" maxHeight="75.0" maxWidth="200.0" minHeight="75.0" minWidth="200.0" mnemonicParsing="false" onAction="#connectToServer" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #9e9e9e;" text="Join Game">
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
