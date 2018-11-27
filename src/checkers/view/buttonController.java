@@ -2,19 +2,19 @@ package checkers.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.control.Button;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 
 import checkers.ClientApp;
-import checkers.model.gamePiece;
+import checkers.Main;
 
 public class buttonController {
 	@FXML
@@ -31,6 +31,8 @@ public class buttonController {
 	private VBox hostJoinBox;
 	@FXML
 	private VBox joinBox;
+	@FXML
+	private GridPane grid;
 	
 	private ClientApp app;
 	
@@ -48,21 +50,16 @@ public class buttonController {
 	@FXML
 	private void hostGame(ActionEvent event) throws InterruptedException{
 		
-		try {
+		try {			
 			//Run Server From Command Line
 			Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"java -jar CheckersServer.jar\""); 
 			
-			Thread.sleep(1000);
+			Thread.sleep(500);
 			
 			//Change Screen
-			hostJoinBox.setVisible(false);
+			app.switchScene("view/PlayScreen.fxml");
 			
-			//Open Socket to server
-			Socket cs = new Socket("localhost", 7065);
-			
-			DataInputStream dins = new DataInputStream(cs.getInputStream());
-			DataOutputStream douts = new DataOutputStream(cs.getOutputStream());
-	
+			Main.connectToServer("localhost", 7065);
 			
 		}catch(Exception e) {
 			System.out.println(e);
@@ -86,18 +83,38 @@ public class buttonController {
 	
 	@FXML
 	private void connectToServer(ActionEvent event) {
-		joinBox.setVisible(false);
+		//Change screen
+		app.switchScene("view/PlayScreen.fxml");
 		
+		//Call main to connect to server
 		try {
-			//Open Socket to server
-			Socket cs = new Socket(ipAddress.getText(), 7065);
+			Main.connectToServer(ipAddress.getText(), 7065);
 			
-			DataInputStream dins = new DataInputStream(cs.getInputStream());
-			DataOutputStream douts = new DataOutputStream(cs.getOutputStream());
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
 		}
+		
+	}
+	
+	@FXML
+	private void movePiece(MouseEvent event) {
+		//Create temp circle object from board
+		Circle temp = (Circle) event.getSource();
+		
+		//Get position in grid pane
+		Integer initialRow = (Integer)temp.getProperties().get("gridpane-row");
+		Integer initialColumn = (Integer)temp.getProperties().get("gridpane-column");
+
+		//Convert from null to zero if on edge
+		if(initialRow == null) {
+			initialRow = 0;
+		}else if(initialColumn == null) {
+			initialColumn = 0;
+		}
+
+		System.out.println("Sending selection");
+		Main.selectPiece(initialRow, initialColumn);
 		
 	}
 	
