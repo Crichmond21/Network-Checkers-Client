@@ -37,9 +37,6 @@ public class Main extends Application {
 			dins = new DataInputStream(cs.getInputStream());
 			douts = new DataOutputStream(cs.getOutputStream());
 			
-			douts.writeInt(100);
-			douts.flush();
-			
 			System.out.println(dins.readInt());
 			
 		}catch(Exception e) {
