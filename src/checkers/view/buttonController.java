@@ -6,13 +6,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
-
 import checkers.ClientApp;
 import checkers.Main;
 
@@ -32,9 +28,11 @@ public class buttonController {
 	@FXML
 	private VBox joinBox;
 	@FXML
-	private GridPane grid;
+	public GridPane grid;
 	
 	private ClientApp app;
+	
+	private Circle currentCircle;
 	
 	public buttonController() {}
 	
@@ -90,6 +88,9 @@ public class buttonController {
 		try {
 			Main.connectToServer(ipAddress.getText(), 7065);
 			
+			Thread.sleep(1000);
+			System.out.println(grid);
+			
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
@@ -98,24 +99,31 @@ public class buttonController {
 	}
 	
 	@FXML
-	private void movePiece(MouseEvent event) {
+	private void movePiece(MouseEvent event) throws InterruptedException {
+		
 		//Create temp circle object from board
-		Circle temp = (Circle) event.getSource();
+		Shape temp = (Shape) event.getSource();
 		
 		//Get position in grid pane
-		Integer initialRow = (Integer)temp.getProperties().get("gridpane-row");
-		Integer initialColumn = (Integer)temp.getProperties().get("gridpane-column");
+		Integer row = (Integer)temp.getProperties().get("gridpane-row");
+		Integer column = (Integer)temp.getProperties().get("gridpane-column");
 
 		//Convert from null to zero if on edge
-		if(initialRow == null) {
-			initialRow = 0;
-		}else if(initialColumn == null) {
-			initialColumn = 0;
+		if(row == null) {
+			row = 0;
+		}else if(column == null) {
+			column = 0;
 		}
-
-		System.out.println("Sending selection");
-		Main.selectPiece(initialRow, initialColumn);
 		
+		if(temp.getClass().equals(Circle.class)) {
+			currentCircle = (Circle) temp;
+			Main.selectPiece(row, column);
+		}
+		if(temp.getClass().equals(Rectangle.class)) {
+			if(Main.selectMovementSpot(row, column)) {
+				grid.getChildren().remove(currentCircle);
+				grid.add(currentCircle, column, row);
+			}	
+		}
 	}
-	
 }

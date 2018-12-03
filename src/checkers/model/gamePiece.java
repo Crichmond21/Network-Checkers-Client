@@ -11,7 +11,7 @@ public class gamePiece {
 	 * Initializes game piece with String team
 	 * @param team String of red or black to set which team the piece is on
 	 */
-	gamePiece(String team, int row, int column){
+	public gamePiece(String team, int row, int column){
 		this.row = row;
 		this.column = column;
 		this.team = team;

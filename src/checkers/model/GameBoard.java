@@ -5,7 +5,7 @@ import checkers.model.gamePiece;
 public class GameBoard {
 	private gamePiece[][] board = new gamePiece[8][8];
 	
-	GameBoard(){
+	public GameBoard(){
 		//Place red pieces on board
 		for(int i = 0; i < 3; i ++) {
 			for(int j = ((i+1)%2); j < 8; j += 2) {
@@ -20,7 +20,7 @@ public class GameBoard {
 		}
 	}
 	
-	GameBoard(gamePiece[][] newState){
+	public void changeBoard(gamePiece[][] newState){
 		this.board = newState;
 	}
 	
