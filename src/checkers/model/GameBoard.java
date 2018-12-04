@@ -2,6 +2,16 @@ package checkers.model;
 
 import checkers.model.gamePiece;
 
+/**
+ * 
+ * OBSELETE METHOD
+ * 
+ * 
+ * 
+ * 
+ * @author Carter Richmond
+ *
+ */
 public class GameBoard {
 	private gamePiece[][] board = new gamePiece[8][8];
 	

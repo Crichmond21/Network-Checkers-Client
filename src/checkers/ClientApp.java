@@ -2,36 +2,33 @@ package checkers;
 
 import java.io.IOException;
 
-import checkers.view.BoardRefresh;
 import checkers.view.buttonController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Main application Java fx layout for Network Checkers Client
+ * 
+ * @author Carter Richmond
+ *
+ */
 public class ClientApp extends Application {
 	
+	//Instance variables for client app
 	private Stage primaryStage;
 	private AnchorPane homeScreen;
 	private buttonController controller;
 	
 	@Override
 	public void start(Stage primaryStage) {
+		//Set stage and title
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Network Checkers");
 	
 		showHomeScreen();
-	}
-	
-	public void moveGridPieces(Node temp, int dr, int dc) {
-		System.out.println(temp);
-		System.out.println(controller.grid);
-		//TODO: FIX THIS NULL POINTER EXCEPTION GRID DOESNT POINT TO ANYTHING
-		controller.grid.getChildren().remove(temp);
-		controller.grid.add(temp, dc, dr);
 	}
 	
 	
@@ -60,16 +57,19 @@ public class ClientApp extends Application {
 		
 	}
 	
+	/**
+	 * Switches main scene to a new fxmlFile
+	 * Loads new controller as well if needed
+	 * @param fxmlFile File to load into screen
+	 */
 	public void switchScene(String fxmlFile) {
 		try {
 			//Load root layout from fxml file
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource(fxmlFile));
 			homeScreen = (AnchorPane) loader.load();
-			
-			Object[] temp = homeScreen.getChildren().toArray();
-			System.out.println(temp[0].getClass().toGenericString());
-			
+
+			//Load new buttonController from FXML file
 			buttonController controller = loader.getController();
 	        controller.setMainApp(this);
 	        
@@ -80,12 +80,7 @@ public class ClientApp extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			Thread.sleep(1000);
-			
-			Thread br = new BoardRefresh((GridPane) temp[0], this);
-			br.start();
-			
-		}catch(IOException | InterruptedException e) {
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

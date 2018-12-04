@@ -1,5 +1,17 @@
 package checkers.model;
 
+
+/**
+ * 
+ * OBSELETE CLASS
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author Cater Richmond
+ *
+ */
 public class gamePiece {
 	private String team = null;
 	private boolean king = false;

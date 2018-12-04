@@ -7,6 +7,28 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * OBSELETE CLASS
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author richmondc1
+ *
+ */
 public class BoardRefresh extends Thread{
 	private int[] moves = null;
 	private GridPane grid;
@@ -89,7 +111,7 @@ public class BoardRefresh extends Thread{
 		if(temp == null) {
 			return;
 		}else {
-			app.moveGridPieces(temp, dr, dc);
+			//app.moveGridPieces(temp, dr, dc);
 		}	
 	}
 }

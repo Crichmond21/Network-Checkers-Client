@@ -5,20 +5,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import checkers.model.GameBoard;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 
-
+/**
+ * Main application to communicate with server and to set up framework JavaFX
+ * 
+ * @author Carter Richmond
+ *
+ */
 public class Main extends Application {
 	private static Socket cs = null;
 	private static DataInputStream dins = null;
 	private static DataOutputStream douts = null;
-	private static GameBoard game = new GameBoard();
-	private static GridPane grid;
+	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -33,15 +35,21 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * Connects to server under given ip address and port number
+	 * @param ip ip address in plain text dotted decimal notation ("127.0.0.1")
+	 * @param port integer port number to connect to
+	 */
 	public static void connectToServer(String ip, int port) {
 		try {
-			//Open Socket to server
-			cs = new Socket("localhost", 7065);
+			//Open Socket to server on specified port
+			cs = new Socket(ip, port);
 			
-			
+			//Get input and output datastreams from server
 			dins = new DataInputStream(cs.getInputStream());
 			douts = new DataOutputStream(cs.getOutputStream());
 			
+			//Print out status connection code from server
 			System.out.println(dins.readInt());
 			
 		}catch(Exception e) {
@@ -49,15 +57,23 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * Sends a the selected piece movement to the server
+	 * @param originalRow
+	 * @param originalColumn
+	 */
 	public static void selectPiece(int originalRow, int originalColumn) {
 		try {
+			//Send code "selectPiece"
 			douts.writeUTF("selectPiece");
 			douts.flush();
+			//Send row and column
 			douts.writeInt(originalRow);
 			douts.writeInt(originalColumn);
 			douts.flush();
 			
-			dins.readInt();
+			//Prints status code from sending piece
+			System.out.println(dins.readInt());
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -65,21 +81,31 @@ public class Main extends Application {
 		}
 	}
 	
+	/**
+	 * Sends destination movement spot for the previously selected piece
+	 * @param destinationRow
+	 * @param destinationColumn
+	 * @return true if move is valid and move performed
+	 */
 	public static boolean selectMovementSpot(int destinationRow, int destinationColumn) {
 		try {
+			//send code "selectMovementSpot"
 			douts.writeUTF("selectMovementSpot");
 			douts.flush();
+			//Send destination row and column of piece
 			douts.writeInt(destinationRow);
 			douts.writeInt(destinationColumn);
 			douts.flush();
-			
-			//Thread.sleep(100);
-						
+				
+			//read and print code given from server
 			int code = dins.readInt();
 			System.out.println(code);
+			
+			//if code equals valid move return true
 			if(code == 200) {
 				return true;
 			}
+			//if code is not valid return false
 			if(code == 300) {
 				return false;
 			}
@@ -88,9 +114,15 @@ public class Main extends Application {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		//if code is not 200 or 300 return false as well
 		return false;
 	}
 	
+	/**
+	 * Get the status of last moved piece from opponent 
+	 * @return integer array of initial position to destination position
+	 */
 	public static int[] getBoard() {
 		try {
 			//send command get game state
@@ -99,6 +131,7 @@ public class Main extends Application {
 			
 			//get status code returned
 			int code = dins.readInt();
+			//if code is 210 (game state changed) then recieve the positions from the server
 			if(code == 210) {
 				//get the 4 ints from the server
 				int initialRow = dins.readInt();
@@ -106,15 +139,14 @@ public class Main extends Application {
 				int destinationRow = dins.readInt();
 				int destinationColumn = dins.readInt();
 				
-				//return array of ints
+				//store the positions in the array and return the array
 				int[] returnArr = {initialRow, initialColumn, destinationRow, destinationColumn};
 				return returnArr;
 			}
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//if exception caught return null
+		//if exception caught or game state unchanged return null
 		return null;
 	}
 	

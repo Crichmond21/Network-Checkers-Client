@@ -7,12 +7,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.*;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import checkers.ClientApp;
 import checkers.Main;
 
+/**
+ * Button Controller for FXML files "MainMenu" and "PlayScreen"
+ * 
+ * @author Carter Richmond
+ *
+ */
 public class buttonController {
+	/**
+	 * Instance variables for the JavaFX elements on screen
+	 */
 	@FXML
 	private Button hostGame;
 	@FXML
@@ -29,34 +37,43 @@ public class buttonController {
 	private VBox joinBox;
 	@FXML
 	public GridPane grid;
-	
 	private ClientApp app;
-	
 	private Circle currentCircle;
 	
+	/**
+	 * Default Constructor
+	 */
 	public buttonController() {}
 	
 	@FXML
-	public void initialize() {
-		
-	}
+	public void initialize() {}
 	
+	/**
+	 * Sets Main app to ClientApp
+	 * @param app ClientApp
+	 */
 	public void setMainApp(ClientApp app) {
 		this.app = app;
 	}
 	
+	/**
+	 * Opens server (on windows) in a command line and connects to server
+	 * @param event Button Click Event
+	 */
 	@FXML
-	private void hostGame(ActionEvent event) throws InterruptedException{
+	private void hostGame(ActionEvent event){
 		
 		try {			
 			//Run Server From Command Line
 			Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"java -jar CheckersServer.jar\""); 
 			
+			//Give server time to start before connecting
 			Thread.sleep(500);
 			
-			//Change Screen
+			//Change Screen to play screen
 			app.switchScene("view/PlayScreen.fxml");
 			
+			//Establish connection with server
 			Main.connectToServer("localhost", 7065);
 			
 		}catch(Exception e) {
@@ -65,6 +82,10 @@ public class buttonController {
 		}
 	}
 	
+	/**
+	 * Switches to mini join connect screen
+	 * @param event Button Click Event
+	 */
 	@FXML
 	private void joinGame(ActionEvent event) {
 		//hides main menu options and replaces them with ip addreess filed and join button
@@ -72,6 +93,10 @@ public class buttonController {
 		joinBox.setVisible(true);
 	}
 	
+	/**
+	 * Takes user back to main menu
+	 * @param event Button Click Event
+	 */
 	@FXML
 	private void back(ActionEvent event) {
 		//hides join menu and goes back to main menu
@@ -79,18 +104,18 @@ public class buttonController {
 		hostJoinBox.setVisible(true);
 	}
 	
+	/**
+	 * Connects to server when join server is hit
+	 * @param event Button Click Event
+	 */
 	@FXML
 	private void connectToServer(ActionEvent event) {
 		//Change screen
 		app.switchScene("view/PlayScreen.fxml");
 		
-		//Call main to connect to server
 		try {
-			Main.connectToServer(ipAddress.getText(), 7065);
-			
-			Thread.sleep(1000);
-			System.out.println(grid);
-			
+			//Call main to connect to server already established server with default port and ip plain text
+			Main.connectToServer(ipAddress.getText(), 7065);	
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
@@ -98,8 +123,12 @@ public class buttonController {
 		
 	}
 	
+	/**
+	 * Called when any spot on the board is pressed. If Checker piece then set the movable piece, if open spot try to move the piece
+	 * @param event Mouse Click Event
+	 */
 	@FXML
-	private void movePiece(MouseEvent event) throws InterruptedException {
+	private void movePiece(MouseEvent event){
 		
 		//Create temp circle object from board
 		Shape temp = (Shape) event.getSource();
@@ -115,10 +144,12 @@ public class buttonController {
 			column = 0;
 		}
 		
+		//If class is circle then call select piece
 		if(temp.getClass().equals(Circle.class)) {
 			currentCircle = (Circle) temp;
 			Main.selectPiece(row, column);
 		}
+		//if main class is rectangle then try to move selected piece to spot
 		if(temp.getClass().equals(Rectangle.class)) {
 			if(Main.selectMovementSpot(row, column)) {
 				grid.getChildren().remove(currentCircle);
