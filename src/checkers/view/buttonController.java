@@ -7,7 +7,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.*;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+
+import java.util.Iterator;
+
 import checkers.ClientApp;
 import checkers.Main;
 
@@ -22,6 +26,8 @@ public class buttonController {
 	 * Instance variables for the JavaFX elements on screen
 	 */
 	@FXML
+	private GridPane grid;
+	@FXML
 	private Button hostGame;
 	@FXML
 	private Button joinGame;
@@ -35,8 +41,7 @@ public class buttonController {
 	private VBox hostJoinBox;
 	@FXML
 	private VBox joinBox;
-	@FXML
-	public GridPane grid;
+	
 	private ClientApp app;
 	private Circle currentCircle;
 	
@@ -54,6 +59,14 @@ public class buttonController {
 	 */
 	public void setMainApp(ClientApp app) {
 		this.app = app;
+	}
+	
+	/**
+	 * Getter method for gridpane
+	 * @return gridpane
+	 */
+	public GridPane getGrid() {
+		return grid;
 	}
 	
 	/**
@@ -79,6 +92,41 @@ public class buttonController {
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
+		}
+	}
+	
+	/**
+	 * Swap Two pieces in the grid pane
+	 * @param ir initial row
+	 * @param ic initial column
+	 * @param dr destination row
+	 * @param dc destination column
+	 */
+	public void swapPieces(int ir, int ic, int dr, int dc) {
+		//get iterator of objects from grid pane
+		System.out.println(grid);
+		Iterator<Node> gridObjects = grid.getChildren().listIterator();
+		
+		Circle piece = null;
+		
+		while(gridObjects.hasNext()) {
+			//Create temp node object
+			Node temp = gridObjects.next();
+			
+			//Get position in grid pane
+			Integer row = (Integer)temp.getProperties().get("gridpane-row");
+			Integer column = (Integer)temp.getProperties().get("gridpane-column");
+			
+			//If object is a circle at the specified point then store object in Circle piece
+			if(temp.getClass().equals(Circle.class) && row == ir && column == ic) {
+				piece = (Circle)temp;
+			}
+		}
+		
+		if(piece != null) {
+			//Move piece to destination
+			grid.getChildren().remove(piece);
+			grid.add(piece, dc, dr);
 		}
 	}
 	
@@ -115,12 +163,17 @@ public class buttonController {
 		
 		try {
 			//Call main to connect to server already established server with default port and ip plain text
-			Main.connectToServer(ipAddress.getText(), 7065);	
+			Main.connectToServer(ipAddress.getText(), 7065);
+			Thread.sleep(500);
+			
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
 		}
 		
+		//Create new thread to check for updates
+		Thread br = new BoardRefresh(this.grid, this.app);
+		br.start();
 	}
 	
 	/**

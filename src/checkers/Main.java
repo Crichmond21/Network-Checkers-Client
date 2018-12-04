@@ -5,7 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import checkers.view.buttonController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -17,11 +19,9 @@ import javafx.scene.layout.BorderPane;
  *
  */
 public class Main extends Application {
-	private static Socket cs = null;
+	private static Socket s = null;
 	private static DataInputStream dins = null;
 	private static DataOutputStream douts = null;
-	
-	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -43,17 +43,18 @@ public class Main extends Application {
 	public static void connectToServer(String ip, int port) {
 		try {
 			//Open Socket to server on specified port
-			cs = new Socket(ip, port);
+			s = new Socket(ip, port);
 			
 			//Get input and output datastreams from server
-			dins = new DataInputStream(cs.getInputStream());
-			douts = new DataOutputStream(cs.getOutputStream());
+			dins = new DataInputStream(s.getInputStream());
+			douts = new DataOutputStream(s.getOutputStream());
 			
 			//Print out status connection code from server
 			System.out.println(dins.readInt());
 			
 		}catch(Exception e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
@@ -71,7 +72,7 @@ public class Main extends Application {
 			douts.writeInt(originalRow);
 			douts.writeInt(originalColumn);
 			douts.flush();
-			
+
 			//Prints status code from sending piece
 			System.out.println(dins.readInt());
 			
