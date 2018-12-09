@@ -1,6 +1,6 @@
 # Network-Checkers-Client
 
-This was game was created for Network Programming (COMP 2100) at Wentworth Institute of Technology.
+This game was created for Network Programming (COMP 2100) at Wentworth Institute of Technology.
 
 A compiled version of the server for this client is included but if you would like the actual code or the latest server version you can find that [here](https://github.com/Crichmond21/Network-Checkers-Server).
 
