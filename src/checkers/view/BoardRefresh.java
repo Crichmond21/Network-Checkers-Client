@@ -17,18 +17,25 @@ public class BoardRefresh extends Thread{
 	private int[] moves = null;
 	private GridPane grid;
 	private ClientApp app;
+	private boolean start = true;
 		
 	public BoardRefresh(GridPane newGrid, ClientApp app){
 		grid = newGrid;
 		System.out.println(grid);
 		this.app = app;
 	}
+	
+	public void end() {
+		start = false;
+	}
+	
 	//
 	@Override
 	public void run() {
-		while(true) {
+		while(start) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
+				//Main.checkDINs();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

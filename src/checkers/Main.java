@@ -5,9 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import checkers.view.buttonController;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -65,9 +63,9 @@ public class Main extends Application {
 	 */
 	public static void selectPiece(int originalRow, int originalColumn) {
 		try {
+			douts.flush();
 			//Send code "selectPiece"
 			douts.writeUTF("selectPiece");
-			douts.flush();
 			//Send row and column
 			douts.writeInt(originalRow);
 			douts.writeInt(originalColumn);
@@ -82,6 +80,14 @@ public class Main extends Application {
 		}
 	}
 	
+	public static void checkDINs() {
+		try {
+			System.out.println(dins.available());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Sends destination movement spot for the previously selected piece
 	 * @param destinationRow
@@ -90,9 +96,9 @@ public class Main extends Application {
 	 */
 	public static boolean selectMovementSpot(int destinationRow, int destinationColumn) {
 		try {
+			douts.flush();
 			//send code "selectMovementSpot"
 			douts.writeUTF("selectMovementSpot");
-			douts.flush();
 			//Send destination row and column of piece
 			douts.writeInt(destinationRow);
 			douts.writeInt(destinationColumn);

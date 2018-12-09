@@ -87,18 +87,19 @@ public class ClientApp extends Application {
 	        //get list of all elements on the homeScreen
 			ObservableList<Node> temp = homeScreen.getChildren();
 			
+			Thread.sleep(500);
+			
 			//Create new thread to check for updates
 			grid = (GridPane)temp.get(0);
-			Thread br = new BoardRefresh(grid, this);
+			BoardRefresh br = new BoardRefresh(grid, this);
 			br.start();
-	        
-	        //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
 			primaryStage.setOnCloseRequest(event -> {
 			    br.interrupt();
-			    br.interrupt();
+			    br.end();
 			});
 			
 		}catch(Exception e) {

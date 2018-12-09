@@ -104,7 +104,7 @@ public class buttonController {
 	 */
 	public void swapPieces(int ir, int ic, int dr, int dc) {
 		//get iterator of objects from grid pane
-		System.out.println(grid);
+		//System.out.println(grid);
 		Iterator<Node> gridObjects = grid.getChildren().listIterator();
 		
 		Circle piece = null;
@@ -170,10 +170,6 @@ public class buttonController {
 			System.out.println(e);
 			System.exit(1);
 		}
-		
-		//Create new thread to check for updates
-		Thread br = new BoardRefresh(this.grid, this.app);
-		br.start();
 	}
 	
 	/**
