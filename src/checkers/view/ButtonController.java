@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import java.util.Iterator;
 
 import checkers.ClientApp;
-import checkers.Main;
+import checkers.ServerHandler;
 
 /**
  * Button Controller for FXML files "MainMenu" and "PlayScreen"
@@ -21,7 +21,7 @@ import checkers.Main;
  * @author Carter Richmond
  *
  */
-public class buttonController {
+public class ButtonController {
 	/**
 	 * Instance variables for the JavaFX elements on screen
 	 */
@@ -48,7 +48,7 @@ public class buttonController {
 	/**
 	 * Default Constructor
 	 */
-	public buttonController() {}
+	public ButtonController() {}
 	
 	@FXML
 	public void initialize() {}
@@ -83,11 +83,11 @@ public class buttonController {
 			//Give server time to start before connecting
 			Thread.sleep(500);
 			
+			//Establish connection with server
+			ServerHandler.connectToServer("localhost", 7065);
+			
 			//Change Screen to play screen
 			app.switchScene("view/PlayScreen.fxml");
-			
-			//Establish connection with server
-			Main.connectToServer("localhost", 7065);
 			
 		}catch(Exception e) {
 			System.out.println(e);
@@ -158,18 +158,18 @@ public class buttonController {
 	 */
 	@FXML
 	private void connectToServer(ActionEvent event) {
-		//Change screen
-		app.switchScene("view/PlayScreen.fxml");
-		
 		try {
 			//Call main to connect to server already established server with default port and ip plain text
-			Main.connectToServer(ipAddress.getText(), 7065);
+			ServerHandler.connectToServer(ipAddress.getText(), 7065);
 			Thread.sleep(500);
 			
 		}catch(Exception e) {
 			System.out.println(e);
 			System.exit(1);
 		}
+		
+		//Change screen
+		app.switchScene("view/PlayScreen.fxml");
 	}
 	
 	/**
@@ -196,11 +196,11 @@ public class buttonController {
 		//If class is circle then call select piece
 		if(temp.getClass().equals(Circle.class)) {
 			currentCircle = (Circle) temp;
-			Main.selectPiece(row, column);
+			ServerHandler.selectPiece(row, column);
 		}
 		//if main class is rectangle then try to move selected piece to spot
 		if(temp.getClass().equals(Rectangle.class)) {
-			if(Main.selectMovementSpot(row, column)) {
+			if(ServerHandler.selectMovementSpot(row, column)) {
 				grid.getChildren().remove(currentCircle);
 				grid.add(currentCircle, column, row);
 			}	

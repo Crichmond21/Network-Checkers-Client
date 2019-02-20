@@ -5,33 +5,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-
 /**
  * Main application to communicate with server and to set up framework JavaFX
  * 
  * @author Carter Richmond
  *
  */
-public class Main extends Application {
+public class ServerHandler {
 	private static Socket s = null;
 	private static DataInputStream dins = null;
 	private static DataOutputStream douts = null;
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private static int ClientNum = 0;
 	
 	/**
 	 * Connects to server under given ip address and port number
@@ -47,13 +31,20 @@ public class Main extends Application {
 			dins = new DataInputStream(s.getInputStream());
 			douts = new DataOutputStream(s.getOutputStream());
 			
-			//Print out status connection code from server
-			System.out.println(dins.readInt());
+			//Gets the client number from the server
+			ClientNum = dins.readInt() - 100;
+			System.out.println("ClientNum Assigned");
+
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	public static int getClientNum() {
+		System.out.println("ClientNum Requested");
+		return ClientNum;
 	}
 	
 	/**
@@ -146,6 +137,9 @@ public class Main extends Application {
 				int destinationRow = dins.readInt();
 				int destinationColumn = dins.readInt();
 				
+				//Send status code back
+				douts.writeInt(200);
+				
 				//store the positions in the array and return the array
 				int[] returnArr = {initialRow, initialColumn, destinationRow, destinationColumn};
 				return returnArr;
@@ -155,9 +149,5 @@ public class Main extends Application {
 		}
 		//if exception caught or game state unchanged return null
 		return null;
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

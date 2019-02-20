@@ -3,7 +3,7 @@ package checkers;
 import java.io.IOException;
 
 import checkers.view.BoardRefresh;
-import checkers.view.buttonController;
+import checkers.view.ButtonController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 /**
@@ -26,7 +27,7 @@ public class ClientApp extends Application {
 	//Instance variables for client app
 	private Stage primaryStage;
 	private AnchorPane homeScreen;
-	private buttonController controller;
+	private ButtonController controller;
 	private GridPane grid;
 	
 	@Override
@@ -46,7 +47,7 @@ public class ClientApp extends Application {
 		try {
 			//Load root layout from fxml file
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("view/MainMenu.fxml"));
+			loader.setLocation(ServerHandler.class.getResource("view/MainMenu.fxml"));
 			homeScreen = (AnchorPane) loader.load();
 			
 			//Load controller
@@ -74,11 +75,11 @@ public class ClientApp extends Application {
 		try {
 			//Load root layout from fxml file
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource(fxmlFile));
+			loader.setLocation(ServerHandler.class.getResource(fxmlFile));
 			homeScreen = (AnchorPane) loader.load();
 
 			//Load new buttonController from FXML file
-			buttonController controller = loader.getController();
+			ButtonController controller = loader.getController();
 	        controller.setMainApp(this);
 	        
 	        //Show the scene containing the homescreen
@@ -87,12 +88,18 @@ public class ClientApp extends Application {
 	        //get list of all elements on the homeScreen
 			ObservableList<Node> temp = homeScreen.getChildren();
 			
-			Thread.sleep(500);
+			Thread.sleep(1000);
 			
 			//Create new thread to check for updates
-			grid = (GridPane)temp.get(0);
+			grid = (GridPane)temp.get(1);
 			BoardRefresh br = new BoardRefresh(grid, this);
 			br.start();
+			
+			System.out.println(ServerHandler.getClientNum());
+			if(ServerHandler.getClientNum() == 2){
+				System.out.println("Client 2");
+				grid.getTransforms().addAll(new Rotate(180, 320, 320));
+			}
 
 			primaryStage.setScene(scene);
 			primaryStage.show();

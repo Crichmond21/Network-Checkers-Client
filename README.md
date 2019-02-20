@@ -11,12 +11,13 @@ Network Checkers is a Multiplayer Java game that utilizes multithreading and soc
 
 ### GUI
 - [ ] Update Board to include turn indicator
-- [ ] Update Board to face the correct direction depending on if you are Player 1 or Player 2
+- [X] Update Board to face the correct direction depending on if you are Player 1 or Player 2
 
 ### Client
 - [ ] Fix syncronization bugs
-- [ ] Overhaul Information Transport protocol to make it more reliable
+- [X] Overhaul Information Transport protocol to make it more reliable
 - [ ] Reformat data transport to all be on same thread
+	-UPDATE *** Data transport still occurs on two seperate threads but one is recieving data while the other is sending it
 
 ### Game
 - [ ] Fix jumping recognized as invalid moves

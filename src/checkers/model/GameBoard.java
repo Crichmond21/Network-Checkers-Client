@@ -4,7 +4,7 @@ import checkers.model.gamePiece;
 
 /**
  * 
- * OBSELETE METHOD
+ * OBSELETE CLASS
  * 
  * 
  * 

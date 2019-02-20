@@ -1,7 +1,7 @@
 package checkers.view;
 
 import checkers.ClientApp;
-import checkers.Main;
+import checkers.ServerHandler;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -34,13 +34,13 @@ public class BoardRefresh extends Thread{
 	public void run() {
 		while(start) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(200);
 				//Main.checkDINs();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
-			moves = Main.getBoard();
+			moves = ServerHandler.getBoard();
 			
 			if(checkState()) {
 				int[] temp = getMoves();
