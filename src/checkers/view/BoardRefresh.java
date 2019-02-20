@@ -120,6 +120,7 @@ public class BoardRefresh extends Thread{
 		}else {
 			//call client app to move piece
 			app.moveGridPiece(temp, dr, dc);
+			
 			//update moves to null
 			moves = null;
 		}	

@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -41,6 +42,8 @@ public class ButtonController {
 	private VBox hostJoinBox;
 	@FXML
 	private VBox joinBox;
+	@FXML
+	private Circle turnCircle;
 	
 	private ClientApp app;
 	private Circle currentCircle;
@@ -203,6 +206,7 @@ public class ButtonController {
 			if(ServerHandler.selectMovementSpot(row, column)) {
 				grid.getChildren().remove(currentCircle);
 				grid.add(currentCircle, column, row);
+				app.switchTurn();
 			}	
 		}
 	}

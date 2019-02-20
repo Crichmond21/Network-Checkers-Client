@@ -16,8 +16,8 @@ Network Checkers is a Multiplayer Java game that utilizes multithreading and soc
 ### Client
 - [ ] Fix syncronization bugs
 - [X] Overhaul Information Transport protocol to make it more reliable
-- [ ] Reformat data transport to all be on same thread
-	-UPDATE *** Data transport still occurs on two seperate threads but one is recieving data while the other is sending it
+- [X] ~~Reformat data transport to all be on same thread~~
+	UPDATE *** Data transport still occurs on two seperate threads but one is recieving data while the other is sending it
 
 ### Game
 - [ ] Fix jumping recognized as invalid moves

@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -29,6 +31,7 @@ public class ClientApp extends Application {
 	private AnchorPane homeScreen;
 	private ButtonController controller;
 	private GridPane grid;
+	private Circle turnCircle;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -88,12 +91,15 @@ public class ClientApp extends Application {
 	        //get list of all elements on the homeScreen
 			ObservableList<Node> temp = homeScreen.getChildren();
 			
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
 			
 			//Create new thread to check for updates
 			grid = (GridPane)temp.get(1);
 			BoardRefresh br = new BoardRefresh(grid, this);
 			br.start();
+			
+			Pane tempPane = (Pane)temp.get(0);
+			turnCircle = (Circle) tempPane.getChildren().get(2);
 			
 			System.out.println(ServerHandler.getClientNum());
 			if(ServerHandler.getClientNum() == 2){
@@ -115,6 +121,17 @@ public class ClientApp extends Application {
 	}
 	
 	/**
+	 * Switches the color of the turn indicator
+	 */
+	public void switchTurn() {
+		if(((Color)turnCircle.getFill()).equals(Color.DODGERBLUE)) {
+			turnCircle.setFill(Color.web("#ff1f1f"));
+		}else {
+			turnCircle.setFill(Color.DODGERBLUE);
+		}
+	}
+	
+	/**
 	 * Moves piece in grid pane for client sync
 	 * @param temp piece to move
 	 * @param dr destination row
@@ -124,12 +141,13 @@ public class ClientApp extends Application {
 		//Run move on the JavaFX thread
 		Platform.runLater(new Runnable() {
 			@Override
-			public void run() {				
+			public void run() {		
 				//move piece
 				grid.getChildren().remove(temp);
 				grid.add(temp, dc, dr);
 			}
 		});
+		switchTurn();
 	}
 	
 	public Stage getPrimaryStage() {
