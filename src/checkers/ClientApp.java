@@ -150,6 +150,17 @@ public class ClientApp extends Application {
 		switchTurn();
 	}
 	
+	public void removePiece(Circle temp) {
+		//Run move on the JavaFX thread
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {		
+						//move piece
+						grid.getChildren().remove(temp);
+					}
+				});
+	}
+	
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}

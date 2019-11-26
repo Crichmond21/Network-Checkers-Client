@@ -1,5 +1,7 @@
 package checkers.view;
 
+import java.util.ArrayList;
+
 import checkers.ClientApp;
 import checkers.ServerHandler;
 import javafx.collections.ObservableList;
@@ -14,14 +16,13 @@ import javafx.scene.shape.Circle;
  *
  */
 public class BoardRefresh extends Thread{
-	private int[] moves = null;
+	private ArrayList<Integer> moves;
 	private GridPane grid;
 	private ClientApp app;
 	private boolean start = true;
 		
 	public BoardRefresh(GridPane newGrid, ClientApp app){
 		grid = newGrid;
-		System.out.println(grid);
 		this.app = app;
 	}
 	
@@ -43,8 +44,15 @@ public class BoardRefresh extends Thread{
 			moves = ServerHandler.getBoard();
 			
 			if(checkState()) {
-				int[] temp = getMoves();
-				moveOpPiece(temp[0], temp[1], temp[2], temp[3]);
+				
+				if(moves.size() > 4) {
+					for(int i = 4; i < moves.size(); i += 2) {
+						removePiece(moves.get(i), moves.get(i+1));
+					}
+				}
+				
+				moveOpPiece(moves.get(0), moves.get(1), moves.get(2), moves.get(3));
+				
 			}
 		}	
 	}
@@ -57,6 +65,8 @@ public class BoardRefresh extends Thread{
 		}
 	}
 	
+	
+	/**
 	public int[] getMoves() {
 		if(checkState()) {
 			int[] temp = moves;
@@ -66,6 +76,7 @@ public class BoardRefresh extends Thread{
 			return moves;
 		}
 	}
+	*/
 	
 	/**
 	 * Gets desired node from girdpane
@@ -122,7 +133,13 @@ public class BoardRefresh extends Thread{
 			app.moveGridPiece(temp, dr, dc);
 			
 			//update moves to null
-			moves = null;
+			moves.clear();
 		}	
+	}
+	
+	private void removePiece(int r, int c) {
+		//get cirlce from gridpane
+		Circle temp = (Circle)getNodeFromGridPane(grid, c, r);
+		app.removePiece(temp);
 	}
 }

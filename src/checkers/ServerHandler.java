@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Main application to communicate with server and to set up framework JavaFX
@@ -120,8 +121,9 @@ public class ServerHandler {
 	/**
 	 * Get the status of last moved piece from opponent 
 	 * @return integer array of initial position to destination position
+	 * @throws InterruptedException 
 	 */
-	public static int[] getBoard() {
+	public static ArrayList<Integer> getBoard() {
 		try {
 			//send command get game state
 			douts.writeUTF("getGameState");
@@ -137,14 +139,35 @@ public class ServerHandler {
 				int destinationRow = dins.readInt();
 				int destinationColumn = dins.readInt();
 				
+				ArrayList<Integer> returnArr = new ArrayList<>();
+				returnArr.add(initialRow);
+				returnArr.add(initialColumn);
+				returnArr.add(destinationRow);
+				returnArr.add(destinationColumn);
+				
 				//Send status code back
 				douts.writeInt(200);
 				
-				//store the positions in the array and return the array
-				int[] returnArr = {initialRow, initialColumn, destinationRow, destinationColumn};
+				Thread.sleep(100);
+				
+				int returnCode = dins.readInt();
+				System.out.println("Return Code:" + returnCode);
+				
+				if(returnCode == 215){
+					for(int i = 0; i < dins.readInt(); i ++) {
+						returnArr.add(dins.readInt());
+					}
+					douts.writeInt(200);
+					
+					Thread.sleep(100);
+					
+					dins.readInt();
+				}
+				
+				
 				return returnArr;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//if exception caught or game state unchanged return null
